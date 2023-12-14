@@ -1,0 +1,1 @@
+2-59/10 * * * * run-one python3 /app/get_data.py --board rm >> /var/log/cron.log 2>&1

@@ -1,3 +1,10 @@
+#
+#My rules
+#Influx directory
+influxdb_dockerdata/
+
+#
+#Defaults for python from github
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
