@@ -1,0 +1,45 @@
+version: "3"  # optional since v1.27.0
+services:
+
+  rm:
+    build: 
+      context: .
+      args:
+        cron_file_name: "cron_rm"
+    depends_on:
+      - influxdb
+
+  b:
+    build: 
+      context: .
+      args:
+        cron_file_name: "cron_b"
+    depends_on:
+      - influxdb
+
+  news:
+    build: 
+      context: .
+      args:
+        cron_file_name: "cron_news"
+    depends_on:
+      - influxdb
+
+  po:
+    build: 
+      context: .
+      args:
+        cron_file_name: "cron_po"
+    depends_on:
+      - influxdb
+
+  influxdb:
+    image: influxdb:2.1.1
+    hostname: influxdb
+    ports:
+      - 8086:8086
+    volumes:
+      - influxdb_dockerdata:/var/lib/influxdb2
+
+volumes:
+  influxdb_dockerdata:
