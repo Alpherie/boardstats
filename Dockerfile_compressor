@@ -1,0 +1,25 @@
+# Dockerfile to compress data from influx for cache
+FROM ubuntu:latest
+LABEL maintainer "@kuklobund"
+
+#Install Cron
+RUN apt-get update
+RUN apt-get -y install cron python3 python3-pip run-one
+RUN pip3 install requests influxdb-client redis
+
+# Add compressor script to the Docker Image
+COPY compress_data.py /app/
+# Copy compressor cron file to the cron.d directory
+COPY compressor_cron /etc/cron.d/compressor_cron
+ 
+# Give execution rights on the cron job
+RUN chmod 0644 /etc/cron.d/compressor_cron
+
+# Apply cron job
+RUN crontab /etc/cron.d/compressor_cron
+ 
+# Create the log file to be able to run tail
+RUN touch /var/log/cron.log
+
+# Run the command on container startup
+CMD cron && tail -f /var/log/cron.log
