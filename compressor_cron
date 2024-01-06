@@ -1,0 +1,2 @@
+10 * * * * run-one python3 /app/compress_data.py --bucket 2ch_hk --board b --period 1h --range 1d >> /var/log/cron.log 2>&1
+20 * * * * run-one python3 /app/compress_data.py --bucket 2ch_hk --board b --period 1d --range month >> /var/log/cron.log 2>&1
