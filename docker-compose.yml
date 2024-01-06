@@ -1,35 +1,11 @@
 version: "3"  # optional since v1.27.0
 services:
 
-  rm:
-    build: 
-      context: .
-      args:
-        cron_file_name: "cron_rm"
-    depends_on:
-      - influxdb
-
   b:
     build: 
       context: .
       args:
         cron_file_name: "cron_b"
-    depends_on:
-      - influxdb
-
-  news:
-    build: 
-      context: .
-      args:
-        cron_file_name: "cron_news"
-    depends_on:
-      - influxdb
-
-  po:
-    build: 
-      context: .
-      args:
-        cron_file_name: "cron_po"
     depends_on:
       - influxdb
 
@@ -40,6 +16,31 @@ services:
       - 8086:8086
     volumes:
       - influxdb_dockerdata:/var/lib/influxdb2
+
+  redis:
+    image: redis:alpine
+    hostname: redis
+    ports: 
+      - 6379:6379
+
+  data_compressor:
+    build:
+      dockerfile: Dockerfile_compressor
+      context: .
+    depends_on:
+      - influxdb
+      - redis
+    volumes:
+      - /etc/localtime:/etc/localtime
+  
+  server:
+    build:
+      dockerfile: Dockerfile_server
+      context: .
+    depends_on:
+      - redis
+    ports:
+      - 8081:8080
 
 volumes:
   influxdb_dockerdata:
