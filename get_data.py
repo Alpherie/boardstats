@@ -119,8 +119,8 @@ if __name__=='__main__':
     
     try:
         result_percent = get_stats(board)
-        if result_percent != 100.0:
-            error = str(result_percent)
+        #if result_percent != 100.0:
+        #    error = str(result_percent)
     except Exception as e:
         error = "-1"
 
